@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} | CineVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .top-nav {
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .logo-glow {
+            text-shadow: 0 0 18px rgba(239, 68, 68, 0.35);
+        }
+
+        .player-wrapper {
+            background: #111111;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+        }
+
+        .info-card {
+            background: #111111;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+        }
+
+        .meta-chip {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+            color: #f3f4f6;
+            font-size: 14px;
+        }
+
+        .btn-red {
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.25s ease;
+            box-shadow: 0 14px 30px rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-red:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 36px rgba(220, 38, 38, 0.35);
+        }
+
+        .btn-dark {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .btn-dark:hover {
+            background: rgba(255,255,255,0.14);
+        }
+
+        .related-card {
+            height: 210px;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .related-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+        }
+
+        .related-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.08));
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="fixed top-0 left-0 w-full z-50 top-nav">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+            <a href="{% url 'app:home' %}" class="text-3xl md:text-4xl font-extrabold text-red-600 tracking-wide logo-glow">
+                CineVerse
+            </a>
+
+            <a href="{% url 'app:home' %}" class="btn-dark">
+                ← Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="pt-28 pb-16 px-6 md:px-10">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- TOP SECTION -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+                <!-- PLAYER SIDE -->
+                <div class="lg:col-span-2">
+                    <div class="player-wrapper">
+                        {% if movie.video %}
+                            <video controls autoplay class="w-full bg-black"
+                                   poster="{% if movie.image_banner %}{{ movie.image_banner.url }}{% else %}{{ movie.image_card.url }}{% endif %}">
+                                <source src="{{ movie.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <div class="p-10 text-center">
+                                <h2 class="text-2xl font-bold mb-3">Video Not Available</h2>
+                                <p class="text-gray-400">No video uploaded for this movie yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- INFO SIDE -->
+                <div class="space-y-6">
+                    <div class="info-card p-6">
+                        <p class="uppercase tracking-[0.3em] text-xs text-red-300 mb-3">Now Streaming</p>
+
+                        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">
+                            {{ movie.title }}
+                        </h1>
+
+                        <div class="flex flex-wrap gap-3 mb-5">
+                            <span class="meta-chip">{{ movie.release_date|date:"Y" }}</span>
+                            <span class="meta-chip">{{ movie.length }} min</span>
+                            <span class="meta-chip">{{ movie.genre_names }}</span>
+                        </div>
+
+                        <p class="text-gray-300 leading-7 text-sm md:text-base mb-6">
+                            {{ movie.description }}
+                        </p>
+
+                        <div class="flex flex-wrap gap-3">
+                            {% if movie.video %}
+                                <a href="#details" class="btn-red">More Details</a>
+                            {% endif %}
+                            <a href="{% url 'app:home' %}" class="btn-dark">Browse More</a>
+                        </div>
+                    </div>
+
+                    <div class="info-card p-6">
+                        <h2 class="text-xl font-bold mb-4">Movie Info</h2>
+
+                        <div class="space-y-4 text-sm">
+                            <div>
+                                <p class="text-gray-400">Title</p>
+                                <p class="text-white font-medium">{{ movie.title }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-400">Release Year</p>
+                                <p class="text-white font-medium">{{ movie.release_date|date:"Y" }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-400">Duration</p>
+                                <p class="text-white font-medium">{{ movie.length }} min</p>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-400">Genres</p>
+                                <p class="text-white font-medium">{{ movie.genre_names }}</p>
+                            </div>
+
+                            <div>
+                                <p class="text-gray-400">Views</p>
+                                <p class="text-white font-medium">{{ movie.movie_views }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILS -->
+            <section id="details" class="mt-10">
+                <div class="info-card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-4">About this movie</h2>
+                    <p class="text-gray-300 leading-8">
+                        {{ movie.description }}
+                    </p>
+                </div>
+            </section>
+
+            <!-- RELATED MOVIES -->
+            <section class="mt-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6">More Like This</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {% for item in related_movies %}
+                        <a href="{% url 'app:movie' item.uu_id %}" class="block">
+                            <div class="related-card"
+                                 style="background-image:url('{% if item.image_banner %}{{ item.image_banner.url }}{% else %}{{ item.image_card.url }}{% endif %}');">
+                                <div class="absolute bottom-0 left-0 right-0 z-10 p-4">
+                                    <h3 class="font-bold text-lg">{{ item.title }}</h3>
+                                    <p class="text-sm text-gray-300 mt-1">
+                                        {{ item.release_date|date:"Y" }} • {{ item.length }} min
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-400">No related movies available.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+</body>
+</html>

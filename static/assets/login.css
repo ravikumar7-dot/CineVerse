@@ -1,0 +1,104 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* CineWorld uses a clean, modern font stack */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+}
+
+.bg-image {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 100%;
+    z-index: 1;
+}
+
+.bg-image::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(0, 0, 0, 0.5); /* Slightly darker overlay for better text contrast */
+    z-index: -1;
+}
+
+.signup-container {
+    width: 100%;
+    max-width: 400px; /* Slimmed down from 450px for a more professional card look */
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 50px 60px; /* Tighter padding so it doesn't look bulky */
+    background-color: rgba(0, 0, 0, 0.75); /* Classic CineWorld translucent black */
+    color: #fff;
+    box-sizing: border-box;
+    border-radius: 8px; /* Adds smooth, modern corners */
+}
+
+.signup-container h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 28px;
+}
+
+.signup-container h2 {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.signup-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-container input {
+    background: #333;
+    border: 0;
+    border-radius: 4px; /* Smooth corners on inputs */
+    color: #fff;
+    height: 45px; /* Slimmer inputs */
+    line-height: 45px;
+    padding: 10px 20px;
+    margin-bottom: 16px; /* Tighter spacing between boxes */
+    font-size: 15px;
+}
+
+/* Adds a nice highlight when the user clicks an input box */
+.signup-container input:focus {
+    outline: none;
+    background: #444; 
+}
+
+.signup-container .signup-btn {
+    background: #e50914;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px; /* Smooth corners on the button */
+    outline: none;
+    padding: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px; /* Pushes the button down slightly */
+    transition: background 0.2s ease; /* Smooth color change on hover */
+}
+
+.signup-container .signup-btn:hover {
+    background: #f40612;
+}
+
+.signup-container .help-text {
+    color: #737373; /* Authentic CineWorld gray */
+    font-size: 14px; 
+    margin-top: 20px;
+}
+
+.signup-container .help-text a {
+    color: #fff; /* Makes the "Signup" or "Login" link pop out in white */
+    text-decoration: none;
+}
+
+.signup-container .help-text a:hover {
+    text-decoration: underline;
+}
