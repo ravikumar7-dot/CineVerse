@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-to-list/<uuid:uu_id>/', views.add_to_list, name='add_to_list'),
     path('remove-from-list/<uuid:uu_id>/', views.remove_from_list, name='remove_from_list'),
     path('my-list/', views.my_list, name='my_list'),
+    path("create-admin/", views.create_admin, name="create_admin"),
 ]

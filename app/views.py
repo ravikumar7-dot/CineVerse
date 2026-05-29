@@ -4,8 +4,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse
 
 from .models import Movie, MyList
+def create_admin(request):
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="admin",
+            email="ravik138811@gmail.com",
+            password="Admin@12345"
+        )
+        return HttpResponse("Admin created successfully")
+    return HttpResponse("Admin already exists")
 
 
 def home(request):
