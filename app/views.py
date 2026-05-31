@@ -12,7 +12,7 @@ def create_admin(request):
         User.objects.create_superuser(
             username="admin",
             email="ravik138811@gmail.com",
-            password="Admin@12345"
+            password="admin"
         )
         return HttpResponse("Admin created successfully")
     return HttpResponse("Admin already exists")
